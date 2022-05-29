@@ -1,0 +1,62 @@
+version: '3.9'
+
+networks:
+  fullstack-network:
+
+services:
+
+#  ProductionWebsite:
+#    build:
+#      context: .
+#      dockerfile: Dockerfiles/Production/Dockerfile.Production
+#    container_name: ProductionWebsite
+#    ports:
+#      -
+#    volumes:
+#      - "./Production_env:/Production_env"
+#    environment:
+#      PORT: ${TARGETSERVICEPORT}
+#      HOST: ${TARGETSERVICEDATABASEHOSTNAME}
+#      MONGO_URL: "mongodb://${DATABASEUSERNAME}:${DATABASEPASSWORD}@${TARGETSERVICEDATABASEHOSTNAME}:${TARGETSERVICEDBPORT}"
+#      ENV: ${ENVIRONMENT}
+#      ROUTING_KEY: "Target"
+#      COPY_KEY: "TargetService"
+#    command:
+#     -
+#    depends_on:
+#      - targetdatabase
+#    networks:
+#      - fullstack-network
+
+
+  production_database:
+      image: mariadb:10.7.3
+      container_name: ProductionDatabase
+      restart: always
+      environment:
+        MARIADB_USER: ${MARIADB_USER}
+        MARIADB_PASSWORD: ${MARIADB_PASSWORD}
+        MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD}
+        MARIADB_DATABASE: ${MARIADB_DATABASE}
+      volumes:
+        - ./Images/Production/Data:/var/lib/mysql
+      ports:
+        - '3306:3306'
+      networks:
+          - fullstack-network
+
+  production_laravel:
+    container_name: ProductionLaravel
+    build:
+      context: .
+      dockerfile: DockerFiles/Production/Dockerfile.Production
+    ports:
+      - '8080:80'
+    volumes:
+      - ./Production_env:/var/www/laravel_docker
+      - ./Images/Production/Data/apache/default.conf:/etc/apache2/sites-enabled/000-default.conf
+      - ./Images/Production/Data/php:/usr/local/etc/php
+    depends_on:
+      - production_database
+    networks:
+      - fullstack-network
