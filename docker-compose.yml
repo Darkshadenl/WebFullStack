@@ -5,30 +5,6 @@ networks:
 
 services:
 
-#  ProductionWebsite:
-#    build:
-#      context: .
-#      dockerfile: Dockerfiles/Production/Dockerfile.Production
-#    container_name: ProductionWebsite
-#    ports:
-#      -
-#    volumes:
-#      - "./Production_env:/Production_env"
-#    environment:
-#      PORT: ${TARGETSERVICEPORT}
-#      HOST: ${TARGETSERVICEDATABASEHOSTNAME}
-#      MONGO_URL: "mongodb://${DATABASEUSERNAME}:${DATABASEPASSWORD}@${TARGETSERVICEDATABASEHOSTNAME}:${TARGETSERVICEDBPORT}"
-#      ENV: ${ENVIRONMENT}
-#      ROUTING_KEY: "Target"
-#      COPY_KEY: "TargetService"
-#    command:
-#     -
-#    depends_on:
-#      - targetdatabase
-#    networks:
-#      - fullstack-network
-
-
   production_database:
       image: mariadb:10.7.3
       container_name: ProductionDatabase
@@ -39,7 +15,7 @@ services:
         MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD}
         MARIADB_DATABASE: ${MARIADB_DATABASE}
       volumes:
-        - ./Images/Production/Data:/var/lib/mysql
+        - ./Images/database:/var/lib/mysql
       ports:
         - '3306:3306'
       networks:
@@ -49,13 +25,13 @@ services:
     container_name: ProductionLaravel
     build:
       context: .
-      dockerfile: DockerFiles/Production/Dockerfile.Production
+      dockerfile: Dockerfile.Webserver
     ports:
       - '8080:80'
     volumes:
-      - ./Production_env:/var/www/laravel_docker
-      - ./Images/Production/Data/apache/default.conf:/etc/apache2/sites-enabled/000-default.conf
-      - ./Images/Production/Data/php:/usr/local/etc/php
+      - ./Website:/var/www/laravel_docker
+      - ./Images/website/apache/default.conf:/etc/apache2/sites-enabled/000-default.conf
+      - ./Images/website/php:/usr/local/etc/php
     depends_on:
       - production_database
     networks:
