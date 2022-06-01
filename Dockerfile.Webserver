@@ -1,27 +1,21 @@
 FROM php:8.0-apache
 
+ARG UID
+ARG GID
+
+ENV UID=${UID}
+ENV GID=${GID}
+
 RUN apt-get update -y
 RUN ["apt-get", "install", "-y", "openssl", "nano", "libcurl4-openssl-dev", "libzip-dev", "libxml2-dev"]
 
-RUN docker-php-ext-install curl
-RUN docker-php-ext-install zip
-RUN docker-php-ext-install xml
-RUN docker-php-ext-install pdo_mysql
-RUN docker-php-ext-install dom
-RUN docker-php-ext-install fileinfo
-RUN docker-php-ext-install tokenizer
-RUN docker-php-ext-install mysqli
-RUN docker-php-ext-install openssl
-RUN docker-php-ext-install pdo_sqlite
+RUN docker-php-ext-install curl zip xml pdo_mysql dom fileinfo tokenizer mysqli
 
-
+RUN mkdir -p /var/www/laravel_docker/
 WORKDIR /var/www/laravel_docker/
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-RUN groupadd -g 1000 www
-RUN useradd -u 1000 -ms /bin/bash -g www www
-RUN chgrp www /var/www/laravel_docker/
-
-USER www
+RUN chown -R www-data:www-data /var/www/laravel_docker/
+RUN chmod -R 775 /var/www/laravel_docker/
 
