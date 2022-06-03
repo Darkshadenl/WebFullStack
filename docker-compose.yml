@@ -35,7 +35,6 @@ services:
       - ./Website:/var/www/laravel_docker
       - ./Images/website/apache/default.conf:/etc/apache2/sites-enabled/000-default.conf
       - ./Images/website/php:/usr/local/etc/php
-      - /var/www/vendor
     depends_on:
       - production_database
     networks:
