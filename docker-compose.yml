@@ -8,7 +8,7 @@ services:
   production_database:
       image: mariadb:10.7.3
       container_name: ProductionDatabase
-      restart: always
+      restart: on-failure
       environment:
         MARIADB_USER: ${MARIADB_USER}
         MARIADB_PASSWORD: ${MARIADB_PASSWORD}
@@ -34,6 +34,26 @@ services:
     volumes:
       - ./Website:/var/www/laravel_docker
       - ./Images/website/apache/default.conf:/etc/apache2/sites-enabled/000-default.conf
+      - ./Images/website/php:/usr/local/etc/php
+    depends_on:
+      - production_database
+    networks:
+      - fullstack-network
+
+
+  old_site:
+    container_name: OldSite
+    build:
+      context: .
+      dockerfile: Dockerfile.OldSite
+      args:
+        - UID=${UID:-1000}
+        - GID=${GID:-1000}
+    ports:
+      - '3305:80'
+    volumes:
+      - ./Old_env:/var/www/old
+      - ./Images/website/old_site/default.conf:/etc/apache2/sites-enabled/000-default.conf
       - ./Images/website/php:/usr/local/etc/php
     depends_on:
       - production_database
