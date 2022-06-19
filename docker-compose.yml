@@ -5,9 +5,9 @@ networks:
 
 services:
 
-  database:
+  mariadatabase:
       image: mariadb:10.7.3
-      container_name: ProductionDatabase
+      container_name: Database
       restart: on-failure
       environment:
         MARIADB_USER: ${MARIADB_USER}
@@ -21,8 +21,8 @@ services:
       networks:
           - fullstack-network
 
-  laravel:
-    container_name: ProductionLaravel
+  fullstacklaravel:
+    container_name: FSLaravel
     build:
       context: .
       dockerfile: Dockerfile.Webserver
