@@ -5,7 +5,7 @@ networks:
 
 services:
 
-  production_database:
+  database:
       image: mariadb:10.7.3
       container_name: ProductionDatabase
       restart: on-failure
@@ -21,7 +21,7 @@ services:
       networks:
           - fullstack-network
 
-  production_laravel:
+  laravel:
     container_name: ProductionLaravel
     build:
       context: .
@@ -36,7 +36,7 @@ services:
       - ./Images/website/apache/default.conf:/etc/apache2/sites-enabled/000-default.conf
       - ./Images/website/php:/usr/local/etc/php
     depends_on:
-      - production_database
+      - database
     networks:
       - fullstack-network
 
@@ -56,6 +56,6 @@ services:
       - ./Images/website/old_site/default.conf:/etc/apache2/sites-enabled/000-default.conf
       - ./Images/website/php:/usr/local/etc/php
     depends_on:
-      - production_database
+      - database
     networks:
       - fullstack-network
