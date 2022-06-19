@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateUsersTable extends Migration
+class CreateInvoiceSubproduct extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,13 @@ class CreateUsersTable extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('invoice_subproduct', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('code');
-            $table->string('password');
+            $table->string('name', 100);
+            $table->double('price', 8, 2);
 
-            $table->rememberToken();
-            $table->timestamps();
+            $table->unsignedBigInteger('invoice_product_id');
+            $table->foreign('invoice_product_id')->references('id')->on('invoice_product');
         });
     }
 
@@ -30,6 +30,6 @@ class CreateUsersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('invoice_subproduct');
     }
 }
