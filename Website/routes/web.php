@@ -25,3 +25,9 @@ Route::get('/contact', function () {
 Route::get('/menu', function () {
     return view('website/MENUKAART');
 });
+Route::get('/order', function () {
+    return view('website/offers');
+});
+Route::get('/kassa', function () {
+    return view('cashdesk/index');
+});

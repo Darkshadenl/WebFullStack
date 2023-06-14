@@ -31,3 +31,6 @@ RUN chmod -R 775 /var/www/laravel_docker/
 RUN ls /var/www/laravel_docker/
 RUN chmod -R 777 /var/www/laravel_docker/storage
 
+RUN sed -i '/<Directory \/var\/www\/laravel_docker>/,/<\/Directory>/ s/AllowOverride None/AllowOverride All/' /etc/apache2/apache2.conf
+RUN a2enmod rewrite
+RUN service apache2 restart

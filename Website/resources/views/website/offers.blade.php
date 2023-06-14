@@ -27,6 +27,11 @@
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Contact&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         </a>
                     </td>
+                    <td valign="middle">
+                        <a href="/order" style="color:white">
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Bestel&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        </a>
+                    </td>
                 </tr>
             </table>
             </p>
@@ -90,5 +95,4 @@
 </table>
 <br>
 <div text-align="center"><a href="/contact">Naar Contact</a></div>
-<div text-align="center"><a href="kassa/index.php">Backend</a></div>
 @endsection
